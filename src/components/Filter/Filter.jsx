@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import { newFilter } from "../../redux/contacts/contacts-actions";
 import { Section, Title, FilterInput } from "./Filter.styled";
+import { useDispatch } from "react-redux";
+import { filter } from "../../redux/filter/filter-action";
 
 export default function Filter({ title }) {
   const dispatch = useDispatch();
 
   const onFilterChange = (e) => {
-    dispatch(newFilter(e.target.value));
+    dispatch(filter(e.target.value));
   };
 
   return (

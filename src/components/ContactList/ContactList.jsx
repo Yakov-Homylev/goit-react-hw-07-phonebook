@@ -1,22 +1,33 @@
 import React from "react";
 import ContactItem from "./ContactItem";
-import { useSelector } from "react-redux";
-import { getVisibleContacts } from "../../redux/contacts/contacts-selector";
 import { List, Notification } from "./ContactList.styled";
+import { useGetContactsQuery } from "../../redux/contacts/contacts";
+import { useSelector } from "react-redux";
 
 export default function ContactList() {
-  const contacts = useSelector(getVisibleContacts);
+  const { data, isLoading } = useGetContactsQuery();
+  const filterQuery = useSelector((state) => state.filter);
+
+  let visibleContacts = [];
+
+  if (!isLoading) {
+    visibleContacts = data.filter((contact) =>
+      contact.name.toLowerCase().includes(filterQuery)
+    );
+  }
+
+  const isContactsNotEmpty = visibleContacts && visibleContacts.length > 0;
 
   return (
     <List>
-      {contacts.length > 0 ? (
-        contacts.map((el) => {
+      {isContactsNotEmpty ? (
+        visibleContacts.map((el) => {
           return (
             <ContactItem
               key={el.id}
               id={el.id}
               name={el.name}
-              number={el.number}
+              number={el.phone}
             />
           );
         })

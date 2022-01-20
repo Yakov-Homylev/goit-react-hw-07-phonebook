@@ -1,36 +1,43 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  useAddContactMutation,
+  useGetContactsQuery,
+} from "../../redux/contacts/contacts";
 import { Form, InputName, Input, AddButoon } from "./ContactForm.styled";
-import { addContact } from "../../redux/contacts/contacts-actions";
 
 function ContactForm() {
-  const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts);
+  const [addContact] = useAddContactMutation();
+  const { data } = useGetContactsQuery();
 
-  const addContacts = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value;
-    const number = e.target.number.value;
-    const isNameInContacts = contacts.find((contact) => contact.name === name);
-    const isNumberInContacts = contacts.find(
-      (contact) => contact.number === number
+    const newContact = {
+      name: e.target.name.value,
+      phone: e.target.number.value,
+    };
+
+    const isNameIncludeInArray = data.find(
+      (contact) => contact.name === newContact.name
     );
-    if (isNameInContacts) {
-      alert("This name in contacts");
-      return;
+    const isNumberIncludeInArray = data.find(
+      (contact) => contact.phone === newContact.phone
+    );
+
+    if (isNameIncludeInArray) {
+      return alert("This name in phonebook!");
     }
-    if (isNumberInContacts) {
-      alert("This number in contacts");
-      return;
+    if (isNumberIncludeInArray) {
+      return alert("This number in phonebook");
     }
 
-    dispatch(addContact(name, number));
-    e.currentTarget.reset();
+    addContact(newContact);
+
+    e.target.reset();
   };
 
   return (
-    <Form onSubmit={addContacts}>
+    <Form onSubmit={onFormSubmit}>
       <InputName>
         Name
         <Input
