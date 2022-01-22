@@ -2,20 +2,26 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Item, NumberSpan, DeleteButton } from "./ContactList.styled";
 import { useDeleteContactMutation } from "../../redux/contacts/contacts";
+import Loader from "../Loader/Loader";
 
-export default function ContactItem({ id, name, number }) {
+export default function ContactItem({ id, name, number, setDeleted }) {
   const [onDeleteClick, { isLoading }] = useDeleteContactMutation();
 
+  const onBtnClick = () => {
+    setDeleted(true);
+    onDeleteClick(id);
+  };
+
   return (
-    <Item>
-      {name + ":"} <NumberSpan>{number}</NumberSpan>
-      <DeleteButton
-        type="button"
-        disabled={isLoading}
-        onClick={() => onDeleteClick(id)}>
-        Delete
-      </DeleteButton>
-    </Item>
+    <>
+      {isLoading && <Loader />}
+      <Item>
+        {name + ":"} <NumberSpan>{number}</NumberSpan>
+        <DeleteButton type="button" disabled={isLoading} onClick={onBtnClick}>
+          Delete
+        </DeleteButton>
+      </Item>
+    </>
   );
 }
 

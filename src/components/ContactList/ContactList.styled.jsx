@@ -30,6 +30,9 @@ export const DeleteButton = styled.button`
   :hover {
     background-color: skyblue;
   }
+  :disabled {
+    background-color: red;
+  }
 `;
 
 export const Notification = styled.p`
