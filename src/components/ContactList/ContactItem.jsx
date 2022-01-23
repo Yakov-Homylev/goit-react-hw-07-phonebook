@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Item, NumberSpan, DeleteButton } from "./ContactList.styled";
 import { useDeleteContactMutation } from "../../redux/contacts/contacts";
+import toast from "react-hot-toast";
 import Loader from "../Loader/Loader";
 
 export default function ContactItem({ id, name, number, setDeleted }) {
@@ -10,6 +11,7 @@ export default function ContactItem({ id, name, number, setDeleted }) {
   const onBtnClick = () => {
     setDeleted(true);
     onDeleteClick(id);
+    toast.success("Contact delete");
   };
 
   return (

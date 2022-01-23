@@ -1,4 +1,5 @@
 import React from "react";
+import toast from "react-hot-toast";
 import {
   useAddContactMutation,
   useGetContactsQuery,
@@ -25,13 +26,15 @@ function ContactForm() {
     );
 
     if (isNameIncludeInArray) {
-      return alert("This name in phonebook!");
+      return toast.error("This name in phonebook!");
     }
     if (isNumberIncludeInArray) {
-      return alert("This number in phonebook");
+      return toast.error("This number in phonebook");
     }
 
     addContact(newContact);
+
+    toast.success("Contact create");
 
     e.target.reset();
   };
